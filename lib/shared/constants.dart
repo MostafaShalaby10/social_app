@@ -1,0 +1,9 @@
+String id = "";
+String name = "";
+String phone = "";
+String email = "";
+String bio = "";
+String profileImageConst = "";
+// bool profileFlag = false ;
+// bool coverFlag = false ;
+String coverImageConst = "";
