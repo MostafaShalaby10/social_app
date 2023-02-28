@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/bloc/states.dart';
+import 'package:social_app/model/postModel.dart';
 import 'package:social_app/model/userModel.dart';
 import 'package:social_app/pages/chats.dart';
 import 'package:social_app/pages/home.dart';
@@ -133,6 +134,7 @@ class cubit extends Cubit<States> {
   }
 
   File? profileImage;
+  File? postImage;
 
   File? coverImage;
 
@@ -166,7 +168,36 @@ class cubit extends Cubit<States> {
     }
   }
 
+  Future<void> addPostPhotoGallery() async {
+    final postPhoto = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (postPhoto != null) {
+      postImage = File(postPhoto.path);
+      uploadPostImage();
+      emit(SuccessGetPostImageGalleryState());
+    } else {
+      print("There is no image");
+      emit(ErrorGetPostImageGalleryState());
+    }
+  }
+
+  Future<void> addPostPhotoCamera() async {
+    final postPhoto = await picker.pickImage(
+      source: ImageSource.camera,
+    );
+    if (postPhoto != null) {
+      postImage = File(postPhoto.path);
+      uploadPostImage();
+      // emit(SuccessGetPostImageCameraState());
+    } else {
+      print("There is no image");
+      // emit(ErrorGetPostImageCameraState());
+    }
+  }
+
   String? profileURL;
+  String? postURL;
   String? coverURL;
 
   void uploadProfileImage() {
@@ -217,7 +248,7 @@ class cubit extends Cubit<States> {
     required String name,
     required String phone,
     required String bio,
-  }) async{
+  }) async {
     // uploadCoverImage();
     emit(LoadingUpdateDataState());
     //  uploadProfileImage();
@@ -232,11 +263,64 @@ class cubit extends Cubit<States> {
       "profileImage": profileURL ?? profileImageConst,
       "coverImage": coverURL ?? coverImageConst,
     }).then((value) {
-      print("Update success") ;
+      print("Update success");
       emit(SuccessUpdateDataState());
     }).catchError((error) {
       print(error.toString());
       emit(ErrorUpdateDataState());
     });
+  }
+
+  void uploadPostImage() {
+    emit(LoadingUploadPostImageState());
+    FirebaseStorage.instance
+        .ref()
+        .child("Posts/${Uri.file(postImage!.path).pathSegments.last}")
+        .putFile(postImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        postURL = value;
+        print("Post URL is : ${postURL}");
+        emit(SuccessUploadPostImageState());
+      }).catchError((error) {
+        print(error.toString());
+        emit(ErrorUploadPostImageState());
+      });
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorUploadPostImageState());
+    });
+  }
+
+  PostModel? postModel;
+
+  void createPost({
+    required String date,
+    required String text,
+  }) {
+    emit(LoadingCreatePostState());
+    postModel = PostModel(
+      name: name,
+      id: id,
+      dateTime: date,
+      photo: profileImageConst,
+      postPhoto: postURL ?? "",
+      text: text,
+    );
+    FirebaseFirestore.instance.collection("Posts").add(postModel!.tomap()).then((value)
+    {
+      print("Create post successfully");
+      emit(SuccessCreatePostState());
+    }).catchError((error){
+      print(error.toString());
+      emit(ErrorCreatePostState());
+    });
+  }
+
+
+  void removePostImage()
+  {
+    postImage = null ;
+   emit(SuccessRemovePostImageState());
   }
 }

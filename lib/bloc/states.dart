@@ -25,6 +25,12 @@ class ErrorUpdateDataState extends States{}
 class SuccessGetProfileImageState extends States{}
 class ErrorGetProfileImageState extends States{}
 
+class SuccessGetPostImageGalleryState extends States{}
+class ErrorGetPostImageGalleryState extends States{}
+
+class SuccessGetPostImageCameraState extends States{}
+class ErrorGetPostImageCameraState extends States{}
+
 class SuccessGetCoverImageState extends States{}
 class ErrorGetCoverImageState extends States{}
 
@@ -35,3 +41,14 @@ class ErrorUploadCoverImageState extends States{}
 class LoadingUploadProfileImageState extends States{}
 class SuccessUploadProfileImageState extends States{}
 class ErrorUploadProfileImageState extends States{}
+
+class LoadingCreatePostState extends States{}
+class SuccessCreatePostState extends States{}
+class ErrorCreatePostState extends States{}
+
+class LoadingUploadPostImageState extends States{}
+class SuccessUploadPostImageState extends States{}
+class ErrorUploadPostImageState extends States{}
+
+class SuccessRemovePostImageState extends States{}
+
