@@ -307,20 +307,36 @@ class cubit extends Cubit<States> {
       postPhoto: postURL ?? "",
       text: text,
     );
-    FirebaseFirestore.instance.collection("Posts").add(postModel!.tomap()).then((value)
-    {
+    FirebaseFirestore.instance
+        .collection("Posts")
+        .add(postModel!.tomap())
+        .then((value) {
       print("Create post successfully");
+      removePostImage();
       emit(SuccessCreatePostState());
-    }).catchError((error){
+    }).catchError((error) {
       print(error.toString());
       emit(ErrorCreatePostState());
     });
   }
 
+  void removePostImage() {
+    postImage = null;
+    emit(SuccessRemovePostImageState());
+  }
 
-  void removePostImage()
-  {
-    postImage = null ;
-   emit(SuccessRemovePostImageState());
+  List<dynamic> posts = [];
+
+  void getPosts() {
+    emit(LoadingGetPostState());
+    FirebaseFirestore.instance.collection("Posts").get().then((value) {
+      value.docs.forEach((element) {
+        posts.add(PostModel.fromjson(element.data()));
+      });
+      emit(SuccessGetPostState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorGetPostState());
+    });
   }
 }

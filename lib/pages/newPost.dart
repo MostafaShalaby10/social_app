@@ -12,6 +12,7 @@ import '../shared/components.dart';
 
 class NewPost extends StatelessWidget {
   var controller = TextEditingController();
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,141 +43,147 @@ class NewPost extends StatelessWidget {
           ),
           body: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(profileImageConst),
-                      radius: 25,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                name,
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                              ),
-                              Icon(
-                                Icons.verified,
-                                color: Colors.blue,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            DateTime.now().toString(),
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
-                          ),
-                        ],
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(profileImageConst),
+                        radius: 25,
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.more_horiz_outlined),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Expanded(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: TextFormField(
-                      controller: controller,
-                      maxLines: 2,
-                      decoration: InputDecoration(
-                          hintText: "What's happening", border: InputBorder.none),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                if (cubit.get(context).postImage != null)
-                  Expanded(
-                    child: Stack(
-                      alignment: AlignmentDirectional.topEnd,
-                      children: [
-                        Image(
-                          image:
-                              FileImage(cubit.get(context).postImage as File),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  name,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                                Icon(
+                                  Icons.verified,
+                                  color: Colors.blue,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              DateTime.now().toString(),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 7, right: 4),
-                          child: CircleAvatar(
-                              radius: 15,
-                              backgroundColor: Colors.black,
-                              child: IconButton(
-                                  onPressed: () {
-                                    cubit.get(context).removePostImage();
-                                  },
-                                  icon: Icon(
-                                    Icons.close,
-                                    size: 15,
-                                  ))),
-                        )
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.more_horiz_outlined),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Expanded(
+                    child: Wrap(
+                      children: [
+                        TextFormField(
+                          controller: controller,
+                          maxLines: 2,
+                          decoration: InputDecoration(
+                              hintText: "What's happening",
+                              border: InputBorder.none),
+                        ),
                       ],
                     ),
                   ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  if (cubit.get(context).postImage != null)
                     Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          cubit.get(context).addPostPhotoGallery();
-                        },
-                        child: Row(
-                          children: [
-                            IconButton(
+                      child: Stack(
+                        alignment: AlignmentDirectional.topEnd,
+                        children: [
+                          Image(
+                            image:
+                                FileImage(cubit.get(context).postImage as File),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 7, right: 4),
+                            child: CircleAvatar(
+                                radius: 15,
+                                backgroundColor: Colors.black,
+                                child: IconButton(
+                                    onPressed: () {
+                                      cubit.get(context).removePostImage();
+                                    },
+                                    icon: Icon(
+                                      Icons.close,
+                                      size: 15,
+                                    ))),
+                          )
+                        ],
+                      ),
+                    ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            cubit.get(context).addPostPhotoGallery();
+                          },
+                          child: Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    cubit.get(context).addPostPhotoGallery();
+                                  },
+                                  icon: Icon(Icons.photo_library)),
+                              Text("Photos")
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            cubit.get(context).addPostPhotoCamera();
+                          },
+                          child: Row(
+                            children: [
+                              IconButton(
                                 onPressed: () {
-                                  cubit.get(context).addPostPhotoGallery();
+                                  cubit.get(context).addPostPhotoCamera();
                                 },
-                                icon: Icon(Icons.photo_library)),
-                            Text("Photos")
-                          ],
+                                icon: Icon(Icons.camera_alt),
+                              ),
+                              Text("Camera")
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          cubit.get(context).addPostPhotoCamera();
-                        },
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                cubit.get(context).addPostPhotoCamera();
-                              },
-                              icon: Icon(Icons.camera_alt),
-                            ),
-                            Text("Camera")
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         );

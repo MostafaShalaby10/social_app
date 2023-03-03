@@ -52,3 +52,6 @@ class ErrorUploadPostImageState extends States{}
 
 class SuccessRemovePostImageState extends States{}
 
+class LoadingGetPostState extends States{}
+class SuccessGetPostState extends States{}
+class ErrorGetPostState extends States{}
