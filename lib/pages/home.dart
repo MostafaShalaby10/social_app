@@ -167,7 +167,7 @@ class home extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   backgroundImage:
-                                  NetworkImage(profileImageConst),
+                                  NetworkImage("${list[index].photo}"),
                                   radius: 25,
                                 ),
                                 Expanded(
@@ -251,7 +251,7 @@ class home extends StatelessWidget {
                     ),
                   ],
                 ),
-                condition: list.length>0,
+                  condition: state is! LoadingGetPostState,
                 fallback: (context)=>Center(child: CircularProgressIndicator()),
               ),
             ),

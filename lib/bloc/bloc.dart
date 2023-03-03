@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/bloc/states.dart';
+import 'package:social_app/model/allUsersModel.dart';
 import 'package:social_app/model/postModel.dart';
 import 'package:social_app/model/userModel.dart';
 import 'package:social_app/pages/chats.dart';
@@ -16,7 +17,6 @@ import 'package:social_app/pages/home.dart';
 import 'package:social_app/pages/profile.dart';
 import 'package:social_app/pages/settings.dart';
 import 'package:social_app/shardprefrence/shardpref.dart';
-import 'package:social_app/shared/components.dart';
 import 'package:social_app/shared/constants.dart';
 
 class cubit extends Cubit<States> {
@@ -38,6 +38,8 @@ class cubit extends Cubit<States> {
 
   void changeBottom(int index) {
     currentIndex = index;
+    if(currentIndex==2)
+      getUsers();
     emit(ChangeBottomBar());
   }
 
@@ -51,14 +53,12 @@ class cubit extends Cubit<States> {
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
-      print("1");
       createUser(
         name: name,
         email: email,
         id: value.user!.uid,
         phone: phone,
       );
-      print("2");
       emit(SuccessSignupState());
     }).catchError((error) {
       print(error.toString());
@@ -77,8 +77,10 @@ class cubit extends Cubit<States> {
       name: name,
       id: id,
       phone: phone,
+      bio: "Write something about you" ,
+      coverImage: "https://img.freepik.com/free-photo/solid-maroon-concrete-textured-wall_53876-95067.jpg?w=996&t=st=1677874794~exp=1677875394~hmac=e65d31fd0f6c57d564e477af90712f42545cb65e3fe20a2717d281d5d93a070c" ,
+      profileImage: "https://img.freepik.com/free-photo/bohemian-man-with-his-arms-crossed_1368-3542.jpg?w=740&t=st=1677874707~exp=1677875307~hmac=bb2263da613e46addfff827f2aa404c192b3ac7b1707f7442dcc7de4b5d459f0",
     );
-    print("hdqwhbwqdwqkjnkjsdan");
     emit(LoadingCreateUserState());
     FirebaseFirestore.instance
         .collection("Users")
@@ -326,6 +328,7 @@ class cubit extends Cubit<States> {
   }
 
   List<dynamic> posts = [];
+  List<dynamic> users = [];
 
   void getPosts() {
     emit(LoadingGetPostState());
@@ -337,6 +340,21 @@ class cubit extends Cubit<States> {
     }).catchError((error) {
       print(error.toString());
       emit(ErrorGetPostState());
+    });
+  }
+
+  void getUsers() {
+    emit(LoadingGetUsersState());
+    users = [];
+    FirebaseFirestore.instance.collection("Users").get().then((value) {
+      value.docs.forEach((element) {
+        if(id!=element.data()["id"])
+        users.add(UserModel.fromjson(element.data()));
+      });
+      emit(SuccessGetUsersState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErrorGetUsersState());
     });
   }
 }
