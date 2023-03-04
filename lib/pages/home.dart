@@ -159,89 +159,92 @@ class home extends StatelessWidget {
                       itemBuilder: (context, index) => Card(
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         elevation: 10,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
 
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundImage:
-                                  NetworkImage("${list[index].photo}"),
-                                  radius: 25,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            name,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                          ),
-
-                                          Icon(
-                                            Icons.verified,
-                                            color: Colors.blue,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        "${list[index].dateTime}",
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 12),
-                                      ),
-                                    ],
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage:
+                                    NetworkImage("${list[index].photo}"),
+                                    radius: 25,
                                   ),
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.more_horiz_outlined),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.grey[400],
-                                height: 1.0,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              name,
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15),
+                                            ),
+
+                                            Icon(
+                                              Icons.verified,
+                                              color: Colors.blue,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          "${list[index].dateTime}",
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.more_horiz_outlined),
+                                  ),
+                                ],
                               ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                                "${list[index].text}" ,
-                                style: Theme.of(context).textTheme.subtitle2),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            if(list[index].postPhoto!="")
-                            Container(
-                              height: MediaQuery.of(context).size.height / 4,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                        "${list[index].postPhoto}" ,
-                                      ),
-                                      fit: BoxFit.cover)),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ],
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.grey[400],
+                                  height: 1.0,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                  "${list[index].text}" ,
+                                  style: Theme.of(context).textTheme.subtitle2),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              if(list[index].postPhoto!="")
+                              Container(
+                                height: MediaQuery.of(context).size.height / 4,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                          "${list[index].postPhoto}" ,
+                                        ),
+                                        fit: BoxFit.cover)),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       separatorBuilder: (context, index) => SizedBox(

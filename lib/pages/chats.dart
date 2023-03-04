@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/bloc/bloc.dart';
 import 'package:social_app/bloc/states.dart';
+import 'package:social_app/model/userModel.dart';
+import 'package:social_app/pages/chat_screen.dart';
 
 class chats extends StatelessWidget {
-  const chats({Key? key}) : super(key: key);
-
+late UserModel userModel ;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<cubit, States>(
@@ -19,32 +20,7 @@ class chats extends StatelessWidget {
                 child: ListView.separated(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "${cubit.get(context).users[index].profileImage}"),
-                              radius: 25,
-                            ),
-                            SizedBox(width: 15,) ,
-                            Expanded(
-                              child: Text(
-                                "${cubit.get(context).users[index].name}",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  itemBuilder: (context, index) => buildChatItem(cubit.get(context).users[index], context),
                   separatorBuilder: (context, index) => SizedBox(
                     height: 10,
                   ),
@@ -58,4 +34,38 @@ class chats extends StatelessWidget {
         },
         listener: (context, state) {});
   }
+Widget buildChatItem(UserModel model, context) => InkWell(
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context)=>ChatScreen(
+        userModel: model,
+      ),)
+    );
+  },
+  child: Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Row(
+      children: [
+        CircleAvatar(
+          radius: 25.0,
+          backgroundImage: NetworkImage(
+            '${model.profileImage}',
+          ),
+        ),
+        SizedBox(
+          width: 15.0,
+        ),
+        Text(
+          '${model.name}',
+          style: TextStyle(
+            height: 1.4,
+          ),
+        ),
+      ],
+    ),
+  ),
+);
+
 }
+

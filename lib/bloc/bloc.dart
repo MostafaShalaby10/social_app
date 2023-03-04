@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/bloc/states.dart';
-import 'package:social_app/model/allUsersModel.dart';
+import 'package:social_app/model/messageModel.dart';
 import 'package:social_app/model/postModel.dart';
 import 'package:social_app/model/userModel.dart';
 import 'package:social_app/pages/chats.dart';
@@ -38,8 +38,7 @@ class cubit extends Cubit<States> {
 
   void changeBottom(int index) {
     currentIndex = index;
-    if(currentIndex==2)
-      getUsers();
+    if (currentIndex == 2) getUsers();
     emit(ChangeBottomBar());
   }
 
@@ -77,9 +76,11 @@ class cubit extends Cubit<States> {
       name: name,
       id: id,
       phone: phone,
-      bio: "Write something about you" ,
-      coverImage: "https://img.freepik.com/free-photo/solid-maroon-concrete-textured-wall_53876-95067.jpg?w=996&t=st=1677874794~exp=1677875394~hmac=e65d31fd0f6c57d564e477af90712f42545cb65e3fe20a2717d281d5d93a070c" ,
-      profileImage: "https://img.freepik.com/free-photo/bohemian-man-with-his-arms-crossed_1368-3542.jpg?w=740&t=st=1677874707~exp=1677875307~hmac=bb2263da613e46addfff827f2aa404c192b3ac7b1707f7442dcc7de4b5d459f0",
+      bio: "Write something about you",
+      coverImage:
+          "https://img.freepik.com/free-photo/solid-maroon-concrete-textured-wall_53876-95067.jpg?w=996&t=st=1677874794~exp=1677875394~hmac=e65d31fd0f6c57d564e477af90712f42545cb65e3fe20a2717d281d5d93a070c",
+      profileImage:
+          "https://img.freepik.com/free-photo/bohemian-man-with-his-arms-crossed_1368-3542.jpg?w=740&t=st=1677874707~exp=1677875307~hmac=bb2263da613e46addfff827f2aa404c192b3ac7b1707f7442dcc7de4b5d459f0",
     );
     emit(LoadingCreateUserState());
     FirebaseFirestore.instance
@@ -332,7 +333,11 @@ class cubit extends Cubit<States> {
 
   void getPosts() {
     emit(LoadingGetPostState());
-    FirebaseFirestore.instance.collection("Posts").get().then((value) {
+    FirebaseFirestore.instance
+        .collection("Posts")
+        .orderBy("dateTime")
+        .get()
+        .then((value) {
       value.docs.forEach((element) {
         posts.add(PostModel.fromjson(element.data()));
       });
@@ -348,13 +353,75 @@ class cubit extends Cubit<States> {
     users = [];
     FirebaseFirestore.instance.collection("Users").get().then((value) {
       value.docs.forEach((element) {
-        if(id!=element.data()["id"])
-        users.add(UserModel.fromjson(element.data()));
+        if (id != element.data()["id"])
+          users.add(UserModel.fromjson(element.data()));
       });
       emit(SuccessGetUsersState());
     }).catchError((error) {
       print(error.toString());
       emit(ErrorGetUsersState());
+    });
+  }
+
+  MessageModel? messageModel;
+
+  void sendMessage({
+    required String date,
+    required String text,
+    String? receiverId,
+  }) {
+    messageModel = MessageModel(
+      date: date,
+      text: text,
+      receiverId: receiverId,
+      senderId: id,
+    );
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(id)
+        .collection("Chats")
+        .doc(receiverId)
+        .collection("Messages")
+        .add(messageModel!.tomap())
+        .then((value) {
+      emit(SuccessSendMessageState());
+    }).catchError((error) {
+      emit(ErrorSendMessageState());
+    });
+
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(receiverId)
+        .collection("Chats")
+        .doc(id)
+        .collection("Messages")
+        .add(messageModel!.tomap())
+        .then((value) {
+      emit(SuccessSendMessageState());
+    }).catchError((error) {
+      emit(ErrorSendMessageState());
+    });
+  }
+
+  List<dynamic> messages = [];
+
+  void getMessages({
+    String? receiverId,
+  }) {
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(id)
+        .collection("Chats")
+        .doc(receiverId)
+        .collection("Messages")
+        .orderBy("date")
+        .snapshots()
+        .listen((event) {
+      messages = [];
+      event.docs.forEach((element) {
+        messages.add(MessageModel.fromjson(element.data()));
+      });
+      // emit(SuccessGetMessageState());
     });
   }
 }

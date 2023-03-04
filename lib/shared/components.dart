@@ -25,7 +25,8 @@ Widget editBox({
           label: Text(text),
           prefixIcon: Icon(prefixIcon),
           suffixIcon: IconButton(onPressed: function, icon: Icon(suffixIcon)),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(25))),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(25))
+      ),
     );
 
 Widget defaultButton(
