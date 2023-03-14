@@ -16,7 +16,7 @@ class EditProfile extends StatelessWidget {
     var nameController = TextEditingController();
     var phoneController = TextEditingController();
     var bioController = TextEditingController();
-    var formkey = GlobalKey<FormState>();
+    var formKey = GlobalKey<FormState>();
     return BlocConsumer<cubit, States>(builder: (context, state) {
       nameController.text = name;
       phoneController.text = phone;
@@ -31,7 +31,7 @@ class EditProfile extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Form(
-                  key: formkey,
+                  key: formKey,
                   child: Column(
                     children: [
                       Container(
@@ -131,7 +131,7 @@ class EditProfile extends StatelessWidget {
                       ),
                         defaultButton(context, text: "Update",
                             function: () {
-                          if (formkey.currentState!.validate()) {
+                          if (formKey.currentState!.validate()) {
                             // cubit.get(context).uploadProfileImage();
                             cubit.get(context).updateData(
                                   phone: phoneController.text,
@@ -150,7 +150,7 @@ class EditProfile extends StatelessWidget {
         ),
       );
     }, listener: (context, state) {
-      if (state is SuccessUpdateDataState) {
+      if (state is SuccessUpdateDataState ) {
         toast(message: "Update Successfully");
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) => base()), (route) => false);

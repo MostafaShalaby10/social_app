@@ -6,7 +6,6 @@ import 'package:social_app/api/api.dart';
 import 'package:social_app/bloc/bloc.dart';
 import 'package:social_app/bloc/states.dart';
 import 'package:social_app/pages/base.dart';
-import 'package:social_app/pages/forgetpassword.dart';
 import 'package:social_app/pages/login.dart';
 import 'package:social_app/pages/signup.dart';
 import 'package:social_app/shardprefrence/shardpref.dart';
@@ -42,7 +41,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: ForgetPassword(),
+            home: start,
           );
         },
         listener: (context, state) {},

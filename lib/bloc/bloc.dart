@@ -32,7 +32,6 @@ class cubit extends Cubit<States> {
   List pages = [home(), profile(), chats()];
   List labels = ["Home", "Profile", "Chats"];
   UserModel? userModel;
-
   int currentIndex = 0;
 
   void changeBottom(int index) {
@@ -209,16 +208,17 @@ class cubit extends Cubit<States> {
   String? postURL;
   String? coverURL;
 
-  void uploadProfileImage() {
+  void uploadProfileImage() async{
     // profileFlag = true ;
     emit(LoadingUploadProfileImageState());
-    FirebaseStorage.instance
+  await  FirebaseStorage.instance
         .ref()
         .child("Users/${Uri.file(profileImage!.path).pathSegments.last}")
         .putFile(profileImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
         profileURL = value;
+
         print("Profile URL is : ${profileURL}");
         emit(SuccessUploadProfileImageState());
       }).catchError((error) {
@@ -231,10 +231,10 @@ class cubit extends Cubit<States> {
     });
   }
 
-  void uploadCoverImage() {
+  void uploadCoverImage() async{
     // coverFlag = true ;
     emit(LoadingUploadCoverImageState());
-    FirebaseStorage.instance
+   await FirebaseStorage.instance
         .ref()
         .child("Users/${Uri.file(coverImage!.path).pathSegments.last}")
         .putFile(coverImage!)

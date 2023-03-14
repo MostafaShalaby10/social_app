@@ -189,27 +189,26 @@ class profile extends StatelessWidget {
                         children: [
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text(
-                                "Add Photos",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                    color: Colors.black),
-                              ),
-                            ),
-                          ),
-                          OutlinedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EditProfile()));
-                            },
-                            child: Icon(
-                              Icons.edit,
-                              color: Colors.black,
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditProfile()));
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.edit,
+                                    color: Colors.black,
+                                  ),
+                                  SizedBox(width: 5,) ,
+                                  Text("Edit" , style: TextStyle(
+                                    color: Colors.black ,
+                                    fontSize: 17
+                                  ),) ,
+                                ],
+                              )
                             ),
                           ),
                         ],
