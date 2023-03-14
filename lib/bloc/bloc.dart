@@ -4,10 +4,12 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_app/api/api.dart';
 import 'package:social_app/bloc/states.dart';
 import 'package:social_app/model/messageModel.dart';
 import 'package:social_app/model/postModel.dart';
@@ -15,7 +17,6 @@ import 'package:social_app/model/userModel.dart';
 import 'package:social_app/pages/chats.dart';
 import 'package:social_app/pages/home.dart';
 import 'package:social_app/pages/profile.dart';
-import 'package:social_app/pages/settings.dart';
 import 'package:social_app/shardprefrence/shardpref.dart';
 import 'package:social_app/shared/constants.dart';
 
@@ -27,11 +28,9 @@ class cubit extends Cubit<States> {
     BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
     BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: "Profile"),
     BottomNavigationBarItem(icon: Icon(Icons.chat_outlined), label: "Chats"),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.settings_outlined), label: "Settings"),
   ];
-  List pages = [home(), profile(), chats(), settings()];
-  List labels = ["Home", "Profile", "Chats", "Settings"];
+  List pages = [home(), profile(), chats()];
+  List labels = ["Home", "Profile", "Chats"];
   UserModel? userModel;
 
   int currentIndex = 0;
@@ -51,13 +50,16 @@ class cubit extends Cubit<States> {
     emit(LoadingSignupState());
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
-        .then((value) {
+        .then((value) async {
+          print("signup success");
       createUser(
         name: name,
         email: email,
         id: value.user!.uid,
         phone: phone,
+        token: await FirebaseMessaging.instance.getToken(),
       );
+      print("after create user") ;
       emit(SuccessSignupState());
     }).catchError((error) {
       print(error.toString());
@@ -70,18 +72,21 @@ class cubit extends Cubit<States> {
     required String email,
     required String id,
     required String phone,
+     dynamic token,
   }) {
     userModel = UserModel(
       email: email,
       name: name,
       id: id,
       phone: phone,
+      token: token,
       bio: "Write something about you",
       coverImage:
           "https://img.freepik.com/free-photo/solid-maroon-concrete-textured-wall_53876-95067.jpg?w=996&t=st=1677874794~exp=1677875394~hmac=e65d31fd0f6c57d564e477af90712f42545cb65e3fe20a2717d281d5d93a070c",
       profileImage:
           "https://img.freepik.com/free-photo/bohemian-man-with-his-arms-crossed_1368-3542.jpg?w=740&t=st=1677874707~exp=1677875307~hmac=bb2263da613e46addfff827f2aa404c192b3ac7b1707f7442dcc7de4b5d459f0",
     );
+    print("in create user 1");
     emit(LoadingCreateUserState());
     FirebaseFirestore.instance
         .collection("Users")
@@ -120,10 +125,11 @@ class cubit extends Cubit<States> {
         .collection("Users")
         .doc(SharedPrefes.getdata(key: "UID"))
         .get()
-        .then((value) {
+        .then((value) async {
       name = value.data()!['name'];
       phone = value.data()!['phone'];
       bio = value.data()!['bio'];
+
       id = value.data()!['id'];
       profileImageConst = value.data()!['profileImage'];
       coverImageConst = value.data()!['coverImage'];
@@ -422,6 +428,33 @@ class cubit extends Cubit<States> {
         messages.add(MessageModel.fromjson(element.data()));
       });
       // emit(SuccessGetMessageState());
+    });
+  }
+
+  void sendNotifications({
+    required String user ,
+    required String title,
+    required String body,
+  }) {
+    emit(LoadingSendNotificationsState());
+    Api.post(user: user, title: title, body: body).then((value)
+    {
+      print("Send message Successfully") ;
+      emit(SuccessSendNotificationsState());
+    }).catchError((error){
+      emit(ErrorSendNotificationsState());
+    });
+  }
+  void notifications()
+  {
+    FirebaseMessaging.onMessage.listen((event) {
+      print("Event :  ${event.data.toString()}");
+      print("Event :  ${event.notification?.title}");
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      print("Event :  ${event.data.toString()}");
+      print("Event :  ${event.notification?.title}");
     });
   }
 }

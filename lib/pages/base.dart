@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/bloc/bloc.dart';
 import 'package:social_app/bloc/states.dart';
+import 'package:social_app/pages/login.dart';
+import 'package:social_app/shardprefrence/shardpref.dart';
 
 class base extends StatelessWidget {
   const base({Key? key}) : super(key: key);
@@ -26,17 +28,14 @@ class base extends StatelessWidget {
                     ),
                   ),
                   actions: [
+
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>login()), (route) => false);
+                        SharedPrefes.removedata(key: "login") ;
+                      },
                       icon: Icon(
-                        Icons.notifications_outlined,
-                        color: Colors.black,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.search_outlined,
+                        Icons.logout,
                         color: Colors.black,
                       ),
                     ),

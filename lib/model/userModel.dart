@@ -6,12 +6,13 @@ class UserModel {
   String? email;
 
   String? phone;
+  dynamic token;
 
   String? coverImage;
   String? profileImage;
 
   String? bio;
-  UserModel({this.phone, this.email, this.name, this.id , this.coverImage, this.profileImage, this.bio });
+  UserModel({this.phone, this.email, this.name, this.id , this.coverImage, this.profileImage, this.bio  , this.token});
 
   UserModel.fromjson(Map<dynamic, dynamic> json) {
     email = json['email'];
@@ -21,6 +22,7 @@ class UserModel {
     coverImage = json['coverImage'];
     profileImage = json['profileImage'];
     bio = json['bio'];
+    token = json['token'];
   }
 
   Map<String, dynamic> tomap() {
@@ -32,6 +34,7 @@ class UserModel {
       "coverImage": coverImage,
       "profileImage": profileImage,
       "bio": bio,
+      "token": token,
     };
   }
 }

@@ -99,3 +99,9 @@ class LoadingGetMessageState extends States {}
 class SuccessGetMessageState extends States {}
 
 class ErrorGetMessageState extends States {}
+
+class LoadingSendNotificationsState extends States {}
+
+class SuccessSendNotificationsState extends States {}
+
+class ErrorSendNotificationsState extends States {}

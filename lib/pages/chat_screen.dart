@@ -34,7 +34,7 @@ class ChatScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundImage:
-                      NetworkImage("${userModel.profileImage}"),
+                          NetworkImage("${userModel.profileImage}"),
                       radius: 25,
                     ),
                     SizedBox(
@@ -73,14 +73,14 @@ class ChatScreen extends StatelessWidget {
                                           .senderId)
                                     return Align(
                                       alignment:
-                                      AlignmentDirectional.centerStart,
+                                          AlignmentDirectional.centerStart,
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Colors.grey[300],
                                             borderRadius:
-                                            BorderRadiusDirectional.only(
+                                                BorderRadiusDirectional.only(
                                               bottomEnd: Radius.circular(
                                                 10.0,
                                               ),
@@ -115,7 +115,7 @@ class ChatScreen extends StatelessWidget {
                                         decoration: BoxDecoration(
                                           color: Colors.blue,
                                           borderRadius:
-                                          BorderRadiusDirectional.only(
+                                              BorderRadiusDirectional.only(
                                             bottomEnd: Radius.circular(
                                               10.0,
                                             ),
@@ -143,10 +143,9 @@ class ChatScreen extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                separatorBuilder: (context, state) =>
-                                    SizedBox(
-                                      height: 5,
-                                    ),
+                                separatorBuilder: (context, state) => SizedBox(
+                                  height: 5,
+                                ),
                                 itemCount: cubit.get(context).messages.length,
                               ),
                             ),
@@ -160,19 +159,19 @@ class ChatScreen extends StatelessWidget {
                       children: [
                         Expanded(
                             child: TextFormField(
-                              controller: controller,
-                              obscureText: false,
-                              keyboardType: TextInputType.text,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Message can't be empty";
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                label: Text("Message"),
-                              ),
-                            )),
+                          controller: controller,
+                          obscureText: false,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Message can't be empty";
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            label: Text("Message"),
+                          ),
+                        )),
                         SizedBox(
                           width: 7,
                         ),
@@ -183,13 +182,11 @@ class ChatScreen extends StatelessWidget {
                               shape: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(25)),
                               onPressed: () {
-
-                                  cubit.get(context).sendMessage(
-                                    date: DateTime.now().toString(),
-                                    text: controller.text,
-                                    receiverId: userModel.id,
-                                  );
-
+                                cubit.get(context).sendMessage(
+                                      date: DateTime.now().toString(),
+                                      text: controller.text,
+                                      receiverId: userModel.id,
+                                    );
                               },
                               child: Text(
                                 "Send",
@@ -208,7 +205,11 @@ class ChatScreen extends StatelessWidget {
             );
           },
           listener: (context, state) {
-
+            if (state is SuccessSendMessageState) {
+              print("Success") ;
+              cubit.get(context).sendNotifications(user: "${userModel.token}" , title: "${userModel.name}", body: controller.text);
+            }
+            ;
           },
         );
       },

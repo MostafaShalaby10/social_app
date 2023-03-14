@@ -2,6 +2,7 @@ String id = "";
 String name = "";
 String phone = "";
 String email = "";
+// String token = "";
 String bio = "";
 String profileImageConst = "";
 // bool profileFlag = false ;

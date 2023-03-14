@@ -16,144 +16,144 @@ class home extends StatelessWidget {
           return Scaffold(
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
-              child: ConditionalBuilder(
-                builder:(context)=> Column(
-                  children: [
-                    InkWell(
-                      onTap: ()
-                      {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>NewPost())) ;
-                      },
-                      child: Card(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        elevation: 10,
-                        child: Column(
-                          children: [
-                            Row(
+              child:Column(
+                children: [
+                  InkWell(
+                    onTap: ()
+                    {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>NewPost())) ;
+                    },
+                    child: Card(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      elevation: 10,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(profileImageConst),
+                                radius: 25,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  "What is on your mind ...",
+                                  style:
+                                  TextStyle(color: Colors.grey, fontSize: 13),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              color: Colors.grey[400],
+                              height: 1.0,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
                               children: [
-                                CircleAvatar(
-                                  backgroundImage: NetworkImage(profileImageConst),
-                                  radius: 25,
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.camera_alt_outlined,
+                                          color: Colors.blue[800],
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "Image",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: 5,
                                 ),
                                 Expanded(
-                                  child: Text(
-                                    "What is on your mind ...",
-                                    style:
-                                    TextStyle(color: Colors.grey, fontSize: 13),
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.tag_outlined,
+                                          color: Colors.red[800],
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "Tags",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.document_scanner_outlined,
+                                          color: Colors.green[800],
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "Document",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.grey[400],
-                                height: 1.0,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {},
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.camera_alt_outlined,
-                                            color: Colors.blue[800],
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "Image",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {},
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.tag_outlined,
-                                            color: Colors.red[800],
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "Tags",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {},
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.document_scanner_outlined,
-                                            color: Colors.green[800],
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "Document",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
-                    ListView.separated(
+                  ),
+                  ConditionalBuilder(
+                    builder: (context)=>ListView.separated(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) => Card(
@@ -230,16 +230,16 @@ class home extends StatelessWidget {
                                 height: 20,
                               ),
                               if(list[index].postPhoto!="")
-                              Container(
-                                height: MediaQuery.of(context).size.height / 4,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                          "${list[index].postPhoto}" ,
-                                        ),
-                                        fit: BoxFit.cover)),
-                              ),
+                                Container(
+                                  height: MediaQuery.of(context).size.height / 4,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                            "${list[index].postPhoto}" ,
+                                          ),
+                                          fit: BoxFit.cover)),
+                                ),
                               SizedBox(
                                 height: 10,
                               ),
@@ -252,11 +252,11 @@ class home extends StatelessWidget {
                       ),
                       itemCount: cubit.get(context).posts.length,
                     ),
-                  ],
-                ),
-                  condition: state is! LoadingGetPostState,
-                fallback: (context)=>Center(child: CircularProgressIndicator()),
-              ),
+                    condition: state is! LoadingGetPostState,
+                    fallback: (context)=>Center(child: CircularProgressIndicator()),
+                  ),
+                ],
+              )
             ),
           );
         },
